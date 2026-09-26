@@ -1,0 +1,30 @@
+# golangci-lint v2 config.  Run with:  golangci-lint run ./...
+# The point of this file (for you): bolt back on as much compile-time-ish
+# safety as Go's toolchain allows, so non-idiomatic / unsafe patterns show up
+# as lint errors instead of runtime surprises.
+version: "2"
+
+linters:
+  # `default: standard` (the default) already enables:
+  #   errcheck    - you never silently drop an `error`
+  #   govet       - the standard vet analyzers
+  #   ineffassign - assignments that are never used
+  #   staticcheck - the big bug/simplification analyzer set
+  #   unused      - dead code
+  # We just add the ones that recover features you actually miss:
+  enable:
+    - exhaustive      # flags a `switch` over an enum that's missing a case
+                      # (this is the exhaustiveness check Go itself lacks)
+
+  settings:
+    exhaustive:
+      # A `default:` clause counts as covering the remaining cases, so you're
+      # only nagged when you write an enum switch with NO default AND miss a
+      # value — which is exactly the accidental-miss you want caught.
+      default-signifies-exhaustive: true
+
+# Formatting is split out from linting in v2. You already have these installed.
+formatters:
+  enable:
+    - gofumpt      # stricter gofmt
+    - goimports    # manage import grouping/ordering

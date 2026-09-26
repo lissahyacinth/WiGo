@@ -1,0 +1,14 @@
+# Compiled binaries / build output
+/wigo
+/bin/
+*.exe
+*.test
+*.out
+
+# Go workspace file (usually machine-local)
+go.work
+go.work.sum
+
+# Coverage / profiling
+*.prof
+coverage.*
